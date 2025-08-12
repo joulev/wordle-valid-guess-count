@@ -4,6 +4,8 @@
   import EligibleGuesses from "~/components/eligible-guesses.svelte";
   import InputRow from "~/components/input-row.svelte";
 
+  import { getCellStates } from "~/lib/wordle";
+
   let rawAnswer = $state("");
   const answer = $derived(rawAnswer.toLowerCase());
   let answerRef = $state<HTMLDivElement | null>(null);
@@ -27,24 +29,9 @@
     element?.querySelector("input")?.blur();
   }
 
-  function getCellStates(word: string) {
-    return word
-      .split("")
-      .map((letter, index) => {
-        if (letter === answer[index]) return "green";
-        if (answer.includes(letter)) return "yellow";
-        return "gray";
-      })
-      .concat(["gray", "gray", "gray", "gray", "gray"]);
-  }
-  const cellStates = $derived([
-    getCellStates(guesses[0]),
-    getCellStates(guesses[1]),
-    getCellStates(guesses[2]),
-    getCellStates(guesses[3]),
-    getCellStates(guesses[4]),
-    getCellStates(guesses[5]),
-  ]);
+  const cellStates = $derived(
+    guesses.map((guess) => getCellStates(answer, guess)),
+  );
 
   function getEligibleGuesses() {
     let currentEligibleGuesses = words;

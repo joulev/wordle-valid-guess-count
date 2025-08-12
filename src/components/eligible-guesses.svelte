@@ -1,6 +1,8 @@
 <script lang="ts">
   const { guesses, enabled }: { guesses: string[] | null; enabled: boolean } =
     $props();
+
+  let showSpoiler = $state(false);
 </script>
 
 {#if !enabled || !guesses || guesses.length === 0}
@@ -11,11 +13,16 @@
       {guesses.length} valid guess{guesses.length === 1 ? "" : "es"}
     </div>
     <div class="flex flex-row items-baseline gap-1.5 text-xs text-neutral-500">
-      {#each guesses.slice(0, 10) as guess (guess)}
-        <div>{guess}</div>
-      {/each}
-      {#if guesses.length > 10}
-        <div>+{guesses.length - 10}</div>
+      {#if showSpoiler}
+        <button onclick={() => (showSpoiler = false)}>[Hide]</button>
+        {#each guesses.slice(0, 10) as guess (guess)}
+          <div>{guess}</div>
+        {/each}
+        {#if guesses.length > 10}
+          <div>+{guesses.length - 10}</div>
+        {/if}
+      {:else}
+        <button onclick={() => (showSpoiler = true)}>[Show]</button>
       {/if}
     </div>
   </div>

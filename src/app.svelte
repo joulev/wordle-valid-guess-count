@@ -4,7 +4,7 @@
   import EligibleGuesses from "~/components/eligible-guesses.svelte";
   import InputRow from "~/components/input-row.svelte";
 
-  import { getCellStates } from "~/lib/wordle";
+  import { getCellStates, satisfyGuess } from "~/lib/wordle";
 
   let rawAnswer = $state("");
   const answer = $derived(rawAnswer.toLowerCase());
@@ -44,38 +44,9 @@
       null,
     ];
     for (let i = 0; i < 5; i++) {
-      const guess = guesses[i].split("");
-      const cellState = cellStates[i];
-      const mustNotHave = guess.filter(
-        (_, index) => cellState[index] === "gray",
+      currentEligibleGuesses = currentEligibleGuesses.filter((word) =>
+        satisfyGuess(word, guesses[i], cellStates[i]),
       );
-      const mustHave = guess.filter((_, index) => cellState[index] !== "gray");
-      const mustMatch = guess.map((letter, index) =>
-        cellState[index] === "green" ? letter : null,
-      );
-      const mustNotMatch = guess.map((letter, index) =>
-        cellState[index] === "yellow" ? letter : null,
-      );
-      currentEligibleGuesses = currentEligibleGuesses.filter((word) => {
-        const wordLetters = word.split("");
-        if (mustNotHave.some((letter) => wordLetters.includes(letter)))
-          return false;
-        if (mustHave.some((letter) => !wordLetters.includes(letter)))
-          return false;
-        if (
-          mustNotMatch.some(
-            (letter, index) => letter !== null && wordLetters[index] === letter,
-          )
-        )
-          return false;
-        if (
-          mustMatch.some(
-            (letter, index) => letter !== null && wordLetters[index] !== letter,
-          )
-        )
-          return false;
-        return true;
-      });
       eligibleGuesses[i + 1] = structuredClone(currentEligibleGuesses);
     }
     return eligibleGuesses;

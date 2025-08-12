@@ -1,8 +1,8 @@
 <script lang="ts">
+  import { showSpoiler } from "~/lib/show-spoiler.svelte";
+
   const { guesses, enabled }: { guesses: string[] | null; enabled: boolean } =
     $props();
-
-  let showSpoiler = $state(false);
 </script>
 
 {#if !enabled || !guesses || guesses.length === 0}
@@ -13,8 +13,8 @@
       {guesses.length} valid guess{guesses.length === 1 ? "" : "es"}
     </div>
     <div class="flex flex-row items-baseline gap-1.5 text-xs text-neutral-500">
-      {#if showSpoiler}
-        <button onclick={() => (showSpoiler = false)}>[Hide]</button>
+      {#if showSpoiler.value}
+        <button onclick={() => (showSpoiler.value = false)}>[Hide]</button>
         {#each guesses.slice(0, 10) as guess (guess)}
           <div>{guess}</div>
         {/each}
@@ -22,7 +22,7 @@
           <div>+{guesses.length - 10}</div>
         {/if}
       {:else}
-        <button onclick={() => (showSpoiler = true)}>[Show]</button>
+        <button onclick={() => (showSpoiler.value = true)}>[Show]</button>
       {/if}
     </div>
   </div>

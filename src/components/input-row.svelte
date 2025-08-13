@@ -1,4 +1,5 @@
 <script lang="ts">
+  import clsx from "clsx";
   import type { Snippet } from "svelte";
   import type { CellState } from "~/types";
 
@@ -21,8 +22,19 @@
   } = $props();
 </script>
 
-<div class="flex flex-row items-center gap-8">
-  <div class="w-18 shrink-0">{label}</div>
-  <WordInput bind:ref bind:value {cellStates} {onComplete} />
-  <div>{@render children?.()}</div>
+<div class="flex flex-col items-center gap-x-8 gap-y-2 md:flex-row">
+  <div
+    class={clsx(
+      "shrink-0 text-xs text-neutral-500 uppercase md:w-15",
+      label !== "Solution" && "max-md:hidden",
+    )}
+  >
+    {label}
+  </div>
+  <div
+    class="flex grow flex-col items-center gap-x-8 gap-y-4 md:flex-row-reverse"
+  >
+    {@render children?.()}
+    <WordInput bind:ref bind:value {cellStates} {onComplete} />
+  </div>
 </div>

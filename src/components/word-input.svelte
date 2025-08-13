@@ -36,7 +36,7 @@
 <PinInput.Root
   bind:ref
   bind:value
-  class="inline-flex items-center justify-center gap-2 border border-transparent p-2 text-white focus-within:border-neutral-200"
+  class="inline-flex items-center justify-center gap-2 border border-transparent text-white outline-offset-2 outline-neutral-200 focus-within:outline"
   maxlength={5}
   pattern={REGEXP_ONLY_CHARS}
   autocorrect="off"

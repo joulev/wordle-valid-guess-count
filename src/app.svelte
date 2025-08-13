@@ -65,8 +65,10 @@
     bind:value={rawAnswer}
     cellStates={["green", "green", "green", "green", "green"]}
     onComplete={() => focusChildInput(guessRefs[0])}
-  />
-  <div class="flex flex-col gap-2">
+  >
+    <div class="grow max-md:hidden"></div>
+  </InputRow>
+  <div class="flex flex-col gap-4">
     <InputRow
       label="Guess #1"
       bind:ref={() => guessRefs[0], (value) => (guessRefs[0] = value)}

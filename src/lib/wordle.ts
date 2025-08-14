@@ -88,7 +88,7 @@ export function satisfyGuess(
       const letter = guessLetters[i];
       if (
         letter &&
-        guessLetters.filter((l) => l === letter).length !==
+        guessLetters.filter((l) => l === letter).length >
           wordLetters.filter((l) => l === letter).length
       )
         return false;

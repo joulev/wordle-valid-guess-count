@@ -44,7 +44,9 @@
   autocomplete="off"
   spellcheck="false"
   inputmode="text"
-  {onComplete}
+  oninput={(e) => {
+    if (e.currentTarget.value.length === 5) onComplete?.();
+  }}
 >
   {#snippet children({ cells })}
     <div class="flex gap-2">
